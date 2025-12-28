@@ -1,19 +1,19 @@
 use clap::Parser;
-
-#[derive(Parser, Debug)]
-#[command(version, about, long_about = None)]
-struct Args {
-    #[arg(short, long)]
-    name: String,
-
-    #[arg(short, long, default_value_t = 1)]
-    count: u8,
-}
+use restcreater::cli::{ Cli, Commands };
+use restcreater::commands::{ new, update };
 
 fn main() {
-    let args = Args::parse();
+    let cli = Cli::parse();
 
-    for _ in 0..args.count {
-        println!("Hello {}!", args.name);
+    match cli.command {
+        Some(Commands::New { name, lang, framework, template }) => {
+            new::run(name, lang, framework, template);
+        }
+        Some(Commands::Update) => {
+            update::run();
+        }
+        None => {
+            Cli::parse_from(["restcreater", "--help"]);
+        }
     }
 }

@@ -60,7 +60,10 @@ fn get_template_path(lang: &str, framework: &str, template: &str) -> String {
         std::env::current_dir().unwrap().join("target/debug/restcreater.exe")
     });
 
-    let exe_dir = exe_path.parent().unwrap();
+    let exe_dir = exe_path.parent().unwrap_or_else(|| {
+        eprintln!("{color_red}✗ Error: Failed to determine executable directory.{color_reset}");
+        std::process::exit(1);
+    });
 
     // Try multiple possible locations for templates
     let possible_paths = vec![

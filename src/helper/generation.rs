@@ -57,7 +57,7 @@ fn get_template_path(lang: &str, framework: &str, template: &str) -> String {
     // Get the executable path and construct template path relative to it
     let exe_path = std::env::current_exe().unwrap_or_else(|_| {
         // Fallback to current dir if can't get exe path (for development)
-        std::env::current_dir().unwrap().join("target/debug/restcreater.exe")
+        std::env::current_dir().unwrap().join("target/debug/restcreater")
     });
 
     let exe_dir = exe_path.parent().unwrap_or_else(|| {

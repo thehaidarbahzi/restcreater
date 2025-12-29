@@ -33,7 +33,9 @@ pub fn copy_template_to_project(
         .into_iter()
         .filter_map(|e| e.ok()) {
         let template_file_path = entry.path();
-        let relative_path = template_file_path.strip_prefix(template_dir).unwrap();
+        let relative_path = template_file_path
+            .strip_prefix(template_dir)
+            .expect("template_file_path is not within template_dir when copying template");
         let project_file_path = project_dir.join(relative_path);
 
         if template_file_path.is_dir() {

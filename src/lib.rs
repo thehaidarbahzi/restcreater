@@ -5,17 +5,9 @@ pub mod commands {
 
 pub mod cli;
 
-pub mod templates {
-    pub mod lang {
-        pub mod golang {
-            pub mod blank;
-        }
-        pub mod rust {}
-    }
-}
-
 pub mod helper {
     pub mod validation;
     pub mod generation;
-    pub mod installation;
+    pub mod prompts;
+    pub mod utils;
 }

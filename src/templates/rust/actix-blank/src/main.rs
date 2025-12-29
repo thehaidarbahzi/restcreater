@@ -9,7 +9,7 @@ async fn hello() -> impl Responder {
 async fn main() -> std::io::Result<()> {
     println!("Server running at: http://127.0.0.1:8000");
     println!("Available endpoints:");
-    println!("   GET / - hello world");
+    println!("   GET / - Hello world!");
 
     HttpServer::new(|| { App::new().service(hello) })
         .bind(("127.0.0.1", 8000))?

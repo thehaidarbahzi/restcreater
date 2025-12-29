@@ -169,5 +169,5 @@ fn get_frameworks(lang: &str) -> Vec<&'static str> {
 }
 
 fn extract_framework_name(choice: &str) -> String {
-    choice.split(' ').next().unwrap_or("unknown").to_lowercase()
+    choice.split_whitespace().next().unwrap_or("unknown").to_lowercase()
 }

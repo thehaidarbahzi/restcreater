@@ -6,8 +6,7 @@ pub mod commands {
 pub mod cli;
 
 pub mod helper {
-    pub mod validation;
     pub mod generation;
-    pub mod prompts;
     pub mod utils;
+    pub mod templates;
 }

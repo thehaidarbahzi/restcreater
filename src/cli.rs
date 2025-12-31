@@ -28,11 +28,9 @@ pub enum Commands {
     New {
         /// Project name
         name: Option<String>,
-        #[arg(short, long, help = "Programming language (rust, go, etc.)")]
+        #[arg(short, long, help = "Programming language")]
         lang: Option<String>,
-        #[arg(short, long, help = "Web framework (axum, warp, gin, etc.)")]
-        framework: Option<String>,
-        #[arg(short, long, help = "Project template (blank, basic, etc.)")]
+        #[arg(short, long, help = "Project template")]
         template: Option<String>,
     },
     /// Update existing project dependencies

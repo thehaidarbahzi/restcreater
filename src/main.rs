@@ -6,8 +6,8 @@ fn main() {
     let cli = Cli::parse();
 
     match cli.command {
-        Some(Commands::New { name, lang, framework, template }) => {
-            new::run(name, lang, framework, template);
+        Some(Commands::New { name, lang, template }) => {
+            new::run(name, lang, template).ok();
         }
         Some(Commands::Update) => {
             update::run();

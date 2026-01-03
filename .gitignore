@@ -4,3 +4,4 @@ Cargo.lock
 
 src/templates/rust/*/Cargo.lock
 src/templates/rust/*/target
+src/templates/go/*/go.sum

@@ -72,11 +72,3 @@ pub fn copy_template_to_project(template_path: &str, project_name: &str) -> io::
 fn replace_placeholders(content: &str, new_name: &str) -> String {
     content.replace("{name}", new_name)
 }
-
-pub fn capitalize_text(s: &str) -> String {
-    let mut c = s.chars();
-    match c.next() {
-        None => String::new(),
-        Some(f) => f.to_uppercase().collect::<String>() + c.as_str(),
-    }
-}

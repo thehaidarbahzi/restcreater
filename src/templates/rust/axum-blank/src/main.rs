@@ -6,7 +6,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     println!("Server running at: http://127.0.0.1:8000");
     println!("Available endpoints:");
-    println!("   GET / - Hello, World!");
+    println!("   GET / - show hello world");
 
     let listener = tokio::net::TcpListener::bind("127.0.0.1:8000").await?;
     axum::serve(listener, app).await?;
@@ -14,5 +14,5 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 }
 
 async fn root() -> &'static str {
-    "Hello, World!"
+    "Hello, world!"
 }

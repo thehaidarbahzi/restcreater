@@ -13,6 +13,12 @@ static DATA: &[Item] = &[
         setup: "cargo update\ncargo run",
         templates: &["actix-blank", "axum-blank", "rocket-blank", "warp-blank"],
     },
+    Item {
+        id: "go",
+        lang: "Go",
+        setup: "go mod tidy\ngo run main.go",
+        templates: &["beego-blank", "buffalo-blank", "echo-blank", "gin-blank", "gorm-blank"],
+    },
 ];
 
 pub fn get_lang() -> Vec<(&'static str, &'static str, &'static str)> {
@@ -33,8 +39,8 @@ pub fn get_template(id: &str) -> Vec<(&'static str, &'static str, &'static str)>
         .unwrap_or_default()
 }
 
-pub fn check_lang(target: &str) -> bool {
-    DATA.iter().any(|item| item.id == target)
+pub fn check_lang(id: &str) -> Option<&'static Item> {
+    DATA.iter().find(|item| item.id == id)
 }
 
 pub fn check_template(target: &str, lang_id: &str) -> bool {

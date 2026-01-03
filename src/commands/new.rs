@@ -4,8 +4,8 @@ use console::{ style };
 
 use crate::helper::{
     generation::scaffold_project,
-    templates::{ check_lang, check_template, get_lang, get_setup_lang, get_template },
-    utils::{ capitalize_text, check_folder_exists, sanitize_name },
+    templates::{ check_template, check_lang, get_lang, get_setup_lang, get_template },
+    utils::{ check_folder_exists, sanitize_name },
 };
 
 pub fn run(
@@ -42,13 +42,18 @@ pub fn run(
     };
 
     let project_lang = match def_lang {
-        Some(lang) if check_lang(&lang) => {
-            log::step(
-                format!("Select a programming language:\n{}", capitalize_text(&lang).bright_black())
-            )?;
-            lang
+        Some(lang) => {
+            if let Some(item) = check_lang(&lang) {
+                log::step(format!("Select a programming language:\n{}", item.lang.bright_black()))?;
+                item.id.to_string()
+            } else {
+                let input_lang = select("Select a programming language:")
+                    .items(&get_lang())
+                    .interact()?;
+                input_lang.to_string()
+            }
         }
-        _ => {
+        None => {
             let input_lang = select("Select a programming language:")
                 .items(&get_lang())
                 .interact()?;

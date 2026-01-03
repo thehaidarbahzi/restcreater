@@ -6,7 +6,7 @@ async fn main() {
 
     println!("Server running at: http://127.0.0.1:8000");
     println!("Available endpoints:");
-    println!("   GET /hello - Hello, world!");
+    println!("   GET /hello - show hello world");
 
     warp::serve(hello).run(([127, 0, 0, 1], 8000)).await;
 }

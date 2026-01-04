@@ -4,8 +4,12 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-clap = { version = "4.5.53", features = ["derive", "color"] }
-exitcode = "1.1.2"
-inline_colorization = "0.1.6"
-inquire = "0.7"
+anyhow = "1.0.100"
+clap = { version = "4.5.53", features = ["derive"] }
+cliclack = "0.3.7"
+colored = "3.0.0"
+console = "0.15.8"
+ctrlc = "3.5.1"
+include_dir = "0.7.4"
+regex = "1.12.2"
 walkdir = "2.5"

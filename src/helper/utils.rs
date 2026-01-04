@@ -3,27 +3,34 @@ use std::fs;
 use std::io::{ self, Write };
 use walkdir::WalkDir;
 
-pub fn ensure_unique_name(base_name: &str) -> String {
-    let mut name = base_name.to_string();
+pub fn sanitize_name(name: &str) -> String {
+    let sanitized = name
+        .trim()
+        .to_lowercase()
+        .chars()
+        .map(|c| {
+            if c.is_alphanumeric() { c } else if c.is_whitespace() || c == '_' { '-' } else { '-' }
+        })
+        .collect::<String>()
+        .split('-')
+        .filter(|s| !s.is_empty())
+        .collect::<Vec<&str>>()
+        .join("-");
+
+    let mut unique_name = sanitized.clone();
     let mut counter = 0;
-
-    while Path::new(&name).exists() {
+    while Path::new(&unique_name).exists() {
         counter += 1;
-        name = format!("{}-{}", base_name, counter);
+        unique_name = format!("{}-{}", sanitized, counter);
     }
-
-    name
+    unique_name
 }
 
 pub fn check_folder_exists(name: &str) -> bool {
     Path::new(name).exists()
 }
 
-pub fn copy_template_to_project(
-    template_path: &str,
-    project_name: &str,
-    project_config: &crate::helper::prompts::ProjectConfig
-) -> io::Result<()> {
+pub fn copy_template_to_project(template_path: &str, project_name: &str) -> io::Result<()> {
     let template_dir = Path::new(template_path);
     let project_dir = Path::new(project_name);
 
@@ -53,7 +60,7 @@ pub fn copy_template_to_project(
                 }
             };
 
-            let processed_content = replace_placeholders(&content, project_config);
+            let processed_content = replace_placeholders(&content, project_name);
             let mut file = fs::File::create(&project_file_path)?;
             file.write_all(processed_content.as_bytes())?;
         }
@@ -62,8 +69,6 @@ pub fn copy_template_to_project(
     Ok(())
 }
 
-fn replace_placeholders(content: &str, config: &crate::helper::prompts::ProjectConfig) -> String {
-    let lib_name = config.name.replace("-", "_");
-
-    content.replace("{name}", &config.name).replace("{lib_name}", &lib_name)
+fn replace_placeholders(content: &str, new_name: &str) -> String {
+    content.replace("{name}", new_name)
 }

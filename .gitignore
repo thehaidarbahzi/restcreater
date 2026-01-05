@@ -5,3 +5,5 @@ Cargo.lock
 src/templates/rust/*/Cargo.lock
 src/templates/rust/*/target
 src/templates/go/*/go.sum
+src/templates/js/*/package-lock.json
+src/templates/js/*/node_modules

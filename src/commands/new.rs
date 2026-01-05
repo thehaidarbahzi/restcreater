@@ -1,10 +1,11 @@
-use cliclack::{ clear_screen, input, intro, log, note, outro, select, spinner };
+use cliclack::{ input, intro, log, note, outro, select, set_theme, spinner };
 use colored::Colorize;
 use console::{ style };
 
 use crate::helper::{
     generation::scaffold_project,
-    templates::{ check_template, check_lang, get_lang, get_setup_lang, get_template },
+    templates::{ check_lang, check_template, get_lang, get_setup_lang, get_template },
+    theme::CustomTheme,
     utils::{ check_folder_exists, sanitize_name },
 };
 
@@ -15,9 +16,9 @@ pub fn run(
 ) -> std::io::Result<()> {
     ctrlc::set_handler(move || {}).expect("setting Ctrl-C handler");
 
-    clear_screen()?;
+    set_theme(CustomTheme);
 
-    intro(style(" Restcreater ").on_cyan().black())?;
+    intro(style(" Restcreater (Esc to Exit) ").bold().on_green())?;
 
     let project_name = match def_name {
         Some(name) => {

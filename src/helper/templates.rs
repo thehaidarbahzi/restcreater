@@ -19,6 +19,12 @@ static DATA: &[Item] = &[
         setup: "go mod tidy\ngo run main.go",
         templates: &["beego-blank", "buffalo-blank", "echo-blank", "gin-blank", "gorm-blank"],
     },
+    Item {
+        id: "js",
+        lang: "Javascript",
+        setup: "npm install\nnpm run dev",
+        templates: &["expressjs-blank", "fastify-blank", "hapijs-blank", "koajs-blank"],
+    },
 ];
 
 pub fn get_lang() -> Vec<(&'static str, &'static str, &'static str)> {

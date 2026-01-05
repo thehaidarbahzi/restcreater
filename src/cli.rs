@@ -15,7 +15,7 @@ fn styles() -> Styles {
 #[derive(Parser)]
 #[command(name = "restcreater")]
 #[command(bin_name = "restcreater")]
-#[command(version, about = "CLI tool to scaffold REST API projects", long_about = None)]
+#[command(version, long_about = None)]
 #[command(styles = styles())]
 pub struct Cli {
     #[command(subcommand)]
@@ -26,11 +26,11 @@ pub struct Cli {
 pub enum Commands {
     /// Create a new REST API project
     New {
-        /// Project name
+        #[arg(short, long, help = "Project name", value_name = "NAME")]
         name: Option<String>,
-        #[arg(short, long, help = "Programming language")]
+        #[arg(short, long, help = "Programming language", requires = "name", value_name = "LANG")]
         lang: Option<String>,
-        #[arg(short, long, help = "Project template")]
+        #[arg(short, long, help = "Project template", requires = "lang", value_name = "TEMPLATE")]
         template: Option<String>,
     },
     /// Update existing project dependencies

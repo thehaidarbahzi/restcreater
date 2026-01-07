@@ -72,3 +72,10 @@ pub fn copy_template_to_project(template_path: &str, project_name: &str) -> io::
 fn replace_placeholders(content: &str, new_name: &str) -> String {
     content.replace("{name}", new_name)
 }
+
+pub fn to_select_items(values: &[String]) -> Vec<(&str, String, String)> {
+    values
+        .iter()
+        .map(|v| (v.as_str(), v.clone(), v.clone()))
+        .collect()
+}

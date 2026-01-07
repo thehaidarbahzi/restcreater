@@ -1,24 +1,27 @@
 use cliclack::{ input, intro, log, note, outro, select, set_theme, spinner };
 use colored::Colorize;
-use console::{ style };
+use console::style;
 
 use crate::helper::{
     generation::scaffold_project,
-    templates::{ check_lang, check_template, get_lang, get_setup_lang, get_template },
+    query::{ check_lang, check_template, get_framework, get_lang, get_templates },
+    registry::scan_templates,
     theme::CustomTheme,
-    utils::{ check_folder_exists, sanitize_name },
+    utils::{ check_folder_exists, sanitize_name, to_select_items },
 };
 
 pub fn run(
     def_name: Option<String>,
     def_lang: Option<String>,
+    def_framework: Option<String>,
     def_templt: Option<String>
 ) -> std::io::Result<()> {
     ctrlc::set_handler(move || {}).expect("setting Ctrl-C handler");
-
     set_theme(CustomTheme);
 
     intro(style(" Restcreater (Esc to Exit) ").bold().on_green())?;
+
+    let registry = scan_templates();
 
     let project_name = match def_name {
         Some(name) => {
@@ -27,73 +30,73 @@ pub fn run(
             name
         }
         None => {
-            let input_name: String = input("Project name:")
+            let input: String = input("Project name:")
                 .placeholder("my-project")
                 .default_input("my-project")
-                .validate(|input: &String| {
-                    if check_folder_exists(input.trim()) {
-                        Err("Please enter a different project name.")
+                .validate(|v: &String| {
+                    if check_folder_exists(v.trim()) {
+                        Err("Folder already exists")
                     } else {
                         Ok(())
                     }
                 })
                 .interact()?;
-            sanitize_name(&input_name)
+            sanitize_name(&input)
         }
     };
+
+    let langs = get_lang(&registry);
 
     let project_lang = match def_lang {
-        Some(lang) => {
-            if let Some(item) = check_lang(&lang) {
-                log::step(format!("Select a programming language:\n{}", item.lang.bright_black()))?;
-                item.id.to_string()
-            } else {
-                let input_lang = select("Select a programming language:")
-                    .items(&get_lang())
-                    .interact()?;
-                input_lang.to_string()
-            }
-        }
-        None => {
-            let input_lang = select("Select a programming language:")
-                .items(&get_lang())
-                .interact()?;
-            input_lang.to_string()
-        }
-    };
-
-    let project_template = match def_templt {
-        Some(templt) if check_template(&templt, &project_lang) => {
-            log::step(format!("Select a template:\n{}", &templt.bright_black()))?;
-            templt
+        Some(lang) if check_lang(&registry, &lang) => {
+            log::step(format!("Language:\n{}", lang.bright_black()))?;
+            lang
         }
         _ => {
-            let input_templt = select("Select a template:")
-                .items(&get_template(&project_lang))
-                .interact()?;
-            input_templt.to_string()
+            select("Select a programming language:")
+                .items(&to_select_items(&langs))
+                .interact()?
+                .to_string()
         }
     };
 
-    let spinner = spinner();
-    spinner.start(
-        format!(
-            "Scaffolding project \"{}\" using \"{}\" template",
-            &project_name,
-            &project_template
-        )
-    );
+    let frameworks = get_framework(&registry, &project_lang);
 
-    match scaffold_project(&project_lang, &project_template, &project_name) {
-        Ok(_) => {
-            spinner.stop("Scaffolding process completed.");
-            note(
-                "Next steps:",
-                format!("cd {}\n{}", project_name, get_setup_lang(&project_lang)).as_str()
-            )?;
+    let project_framework = match def_framework {
+        Some(fw) if frameworks.iter().any(|f| f == &fw) => {
+            log::step(format!("Framework:\n{}", fw.bright_black()))?;
+            fw
         }
-        Err(_) => {
-            spinner.error("Something went wrong.");
+        _ => {
+            select("Select a framework:")
+                .items(&to_select_items(&frameworks))
+                .interact()?
+                .to_string()
+        }
+    };
+
+    let templates = get_templates(&registry, &project_lang, &project_framework);
+
+    let project_template = match def_templt {
+        Some(tpl) if check_template(&registry, &project_lang, &project_framework, &tpl) => {
+            log::step(format!("Template:\n{}", tpl.bright_black()))?;
+            tpl
+        }
+        _ => {
+            select("Select a template:").items(&to_select_items(&templates)).interact()?.to_string()
+        }
+    };
+
+    let spin = spinner();
+    spin.start(format!("Scaffolding \"{}\" using \"{}\"", project_name, project_template));
+
+    match scaffold_project(&project_lang, &project_framework, &project_template, &project_name) {
+        Ok(_) => {
+            spin.stop("Scaffolding completed.");
+            note("Next steps:", format!("cd {}", project_name).as_str())?;
+        }
+        Err(e) => {
+            spin.error(format!("Error: {}", e));
         }
     }
 

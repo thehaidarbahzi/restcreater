@@ -1,10 +1,10 @@
 # Restcreater
 
-A command-line tool for scaffolding simple REST API projects in multiple programming languages and frameworks.
+A command-line tool for easily scaffolding REST API projects in multiple programming languages and frameworks.
 
 ## Overview
 
-**restcreater** is designed to eliminate the repetitive setup process when starting new REST API projects. Whether you're prototyping, learning a new framework, or starting a production project, restcreater provides you with clean, minimal boilerplate code to get started immediately.
+**restcreater** is designed to eliminate the repetitive setup process when starting new REST API projects. Whether you're prototyping, learning a new framework, or starting a production project, restcreater provides you with clean and minimal boilerplate code to get started immediately.
 
 The tool includes carefully crafted templates for popular web frameworks across Rust, Go, and JavaScript ecosystems, each featuring a basic "Hello World" endpoint and a clear structure for building upon.
 
@@ -13,7 +13,7 @@ The tool includes carefully crafted templates for popular web frameworks across 
 - **Multiple Language Support**: Create REST APIs in Rust, Go, or JavaScript
 - **Framework Templates**: Pre-configured templates for popular web frameworks
 - **Fast Setup**: Generate a complete project structure in seconds
-- **Minimal Boilerplate**: Clean, idiomatic code following best practices
+- **Minimal Boilerplate**: Clean code without complicated mess
 
 ## Supported Languages & Frameworks
 
@@ -71,20 +71,22 @@ restcreater new
 You'll be guided through selecting:
 1. Project name
 2. Programming language
-3. Framework template
+3. Framework
+4. Project template
 
 #### Command-Line Arguments
 
 Alternatively, specify all parameters directly:
 
 ```bash
-restcreater new --name <PROJECT_NAME> --lang <LANGUAGE> --template <TEMPLATE>
+restcreater new --name <PROJECT_NAME> --lang <LANGUAGE> --framework <FRAMEWORK> --template <TEMPLATE>
 ```
 
 **Arguments:**
-- `-n, --name <NAME>` - The name of your project
-- `-l, --lang <LANG>` - The programming language (rust, go, javascript)
-- `-t, --template <TEMPLATE>` - The framework template to use
+- `-n, --name <NAME>` - Project name
+- `-l, --lang <LANG>` - Programming language (rust, go, javascript)
+- `-f --framework <FRAMEWORK>` - Framework for the selected language
+- `-t, --template <TEMPLATE>` - Project template
 
 ## Contributing
 
@@ -96,19 +98,12 @@ To add support for a new framework:
 
 1. Create a new directory under `src/templates/<language>/<framework-name>/`
 2. Add the necessary template files with proper variable substitution (e.g., `{{name}}`)
-3. Update the CLI to recognize the new template
-4. Test the template generation thoroughly
-5. Update this README with the new framework
+3. Test the template generation thoroughly
+4. Update this README with the new framework
 
 ## License
 
 This project is currently unlicensed.
-
-## Contact
-
-**Haidar Bahzi** - [@thehaidarbahzi](https://github.com/thehaidarbahzi)
-
-Project Link: [https://github.com/thehaidarbahzi/restcreater](https://github.com/thehaidarbahzi/restcreater)
 
 ## Roadmap
 
@@ -116,9 +111,3 @@ Project Link: [https://github.com/thehaidarbahzi/restcreater](https://github.com
 - [ ] Add more framework templates
 - [ ] Publish to github releases
 - [ ] Implement update feature
-
-<br/>
-
-<div align="center">
-  <sub>Star this repository if you find it helpful!</sub>
-</div>

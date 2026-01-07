@@ -1,6 +1,5 @@
 /target
 .vscode
-Cargo.lock
 
 src/templates/rust/*/Cargo.lock
 src/templates/rust/*/target

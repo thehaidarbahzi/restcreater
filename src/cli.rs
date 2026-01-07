@@ -30,7 +30,15 @@ pub enum Commands {
         name: Option<String>,
         #[arg(short, long, help = "Programming language", requires = "name", value_name = "LANG")]
         lang: Option<String>,
-        #[arg(short, long, help = "Project template", requires = "lang", value_name = "TEMPLATE")]
+        #[arg(short, long, help = "Project Framework", requires = "lang", value_name = "FRAMEWORK")]
+        framework: Option<String>,
+        #[arg(
+            short,
+            long,
+            help = "Project template",
+            requires = "framework",
+            value_name = "TEMPLATE"
+        )]
         template: Option<String>,
     },
     /// Update existing project dependencies

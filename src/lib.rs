@@ -8,6 +8,7 @@ pub mod cli;
 pub mod helper {
     pub mod generation;
     pub mod utils;
-    pub mod templates;
     pub mod theme;
+    pub mod query;
+    pub mod registry;
 }

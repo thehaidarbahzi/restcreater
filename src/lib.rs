@@ -11,4 +11,5 @@ pub mod helper {
     pub mod theme;
     pub mod query;
     pub mod registry;
+    pub mod updater;
 }

@@ -17,6 +17,7 @@ pub fn run(
     def_templt: Option<String>
 ) -> std::io::Result<()> {
     ctrlc::set_handler(move || {}).expect("setting Ctrl-C handler");
+
     set_theme(CustomTheme);
 
     intro(style(" Restcreater (Esc to Exit) ").bold().on_green())?;

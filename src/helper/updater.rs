@@ -2,6 +2,7 @@ use serde::Deserialize;
 use reqwest::blocking::Client;
 use semver::Version;
 use std::{ fs::File, env, process::Command };
+use std::os::windows::process::CommandExt;
 
 #[derive(Deserialize)]
 pub struct Release {
@@ -49,24 +50,30 @@ fn download(url: &str, output: &str) -> Result<(), Box<dyn std::error::Error>> {
 
 fn replace_and_restart(new_exe: &str) {
     let current = env::current_exe().unwrap();
+    let updater = current.with_file_name("update.bat");
+
+    let script = format!(
+        r#"
+@echo off
+timeout /t 2 /nobreak > nul
+move /Y "{new}" "{cur}" > nul 2>&1
+start "" "{cur}" > nul 2>&1
+if exist "%~f0" del "%~f0" > nul 2>&1
+"#,
+        new = new_exe,
+        cur = current.display()
+    );
+
+    std::fs::write(&updater, script).unwrap();
 
     Command::new("cmd")
-        .args([
-            "/C",
-            &format!(
-                "timeout 2 && move /Y \"{}\" \"{}\" && start \"\" \"{}\"",
-                new_exe,
-                current.display(),
-                current.display()
-            ),
-        ])
+        .args(["/C", updater.to_str().unwrap()])
+        .creation_flags(0x08000000)
         .spawn()
         .unwrap();
-
-    std::process::exit(0);
 }
 
-pub fn update_to_latest(release: &Release) -> Result<(), Box<dyn std::error::Error>> {
+pub fn update_to_latest(release: &Release) -> Result<bool, Box<dyn std::error::Error>> {
     let asset = find_windows_asset(release).ok_or("Windows binary not found in release")?;
 
     let temp_path = "restcreater_new.exe";
@@ -75,5 +82,5 @@ pub fn update_to_latest(release: &Release) -> Result<(), Box<dyn std::error::Err
 
     replace_and_restart(temp_path);
 
-    Ok(())
+    Ok(true)
 }

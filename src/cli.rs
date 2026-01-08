@@ -13,10 +13,13 @@ fn styles() -> Styles {
 }
 
 #[derive(Parser)]
-#[command(name = "restcreater")]
-#[command(bin_name = "restcreater")]
-#[command(version, long_about = None)]
-#[command(styles = styles())]
+#[command(
+    name = "restcreater",
+    bin_name = "restcreater",
+    version,
+    long_about = None,
+    styles = styles()
+)]
 pub struct Cli {
     #[command(subcommand)]
     pub command: Option<Commands>,

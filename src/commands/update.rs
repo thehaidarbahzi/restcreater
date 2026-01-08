@@ -1,4 +1,4 @@
-use cliclack::{ confirm, intro, log, outro, set_theme, spinner };
+use cliclack::{ confirm, intro, outro, outro_cancel, set_theme, spinner };
 use console::style;
 
 use crate::helper::{
@@ -44,24 +44,22 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
 
         if update {
             match update_to_latest(&version) {
-                Ok(_) => {
-                    log::step("Update success.")?;
+                Ok(true) => {
+                    outro("Update success.")?;
+
+                    std::thread::sleep(std::time::Duration::from_millis(500));
+
+                    std::process::exit(0);
                 }
+                Ok(_) => {}
                 Err(e) => {
-                    log::error(format!("Update failed: {}", e))?;
+                    outro_cancel(format!("Update failed: {}", e))?;
                 }
             }
         }
     } else {
-        log::step("Restcreater is already up to date.")?;
+        outro("Restcreater is already up to date.")?;
     }
-
-    outro(
-        format!(
-            "Problems? {}\n",
-            style("https://github.com/thehaidarbahzi/restcreater/issues").cyan().underlined()
-        )
-    )?;
 
     Ok(())
 }

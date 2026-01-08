@@ -28,7 +28,7 @@ pub enum Commands {
     New {
         #[arg(short, long, help = "Project name", value_name = "NAME")]
         name: Option<String>,
-        #[arg(short, long, help = "Programming language", requires = "name", value_name = "LANG")]
+        #[arg(short, long, help = "Project language", requires = "name", value_name = "LANG")]
         lang: Option<String>,
         #[arg(short, long, help = "Project Framework", requires = "lang", value_name = "FRAMEWORK")]
         framework: Option<String>,

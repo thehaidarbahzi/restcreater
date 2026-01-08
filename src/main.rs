@@ -10,7 +10,7 @@ fn main() {
             new::run(name, lang, framework, template).ok();
         }
         Some(Commands::Update) => {
-            update::run();
+            update::run().ok();
         }
         None => {
             Cli::parse_from(["restcreater", "--help"]);

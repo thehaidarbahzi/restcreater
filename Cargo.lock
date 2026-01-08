@@ -1291,7 +1291,7 @@ dependencies = [
 
 [[package]]
 name = "restcreater"
-version = "1.1.0"
+version = "1.1.1"
 dependencies = [
  "anyhow",
  "clap",
@@ -1338,7 +1338,7 @@ dependencies = [
  "errno",
  "libc",
  "linux-raw-sys",
- "windows-sys 0.52.0",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -1655,7 +1655,7 @@ dependencies = [
  "getrandom 0.3.4",
  "once_cell",
  "rustix",
- "windows-sys 0.52.0",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]

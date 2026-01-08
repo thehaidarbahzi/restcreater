@@ -56,6 +56,8 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
                     outro_cancel(format!("Update failed: {}", e))?;
                 }
             }
+        } else {
+            outro("")?;
         }
     } else {
         outro("Restcreater is already up to date.")?;
